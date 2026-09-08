@@ -1,12 +1,12 @@
 # Machine Learning Based Buyer Segmentation and Investment Profiling for Real Estate Market Intelligence
 
-A data science project developed for Parcl Co. Limited (via Unified Mentor) to identify hidden buyer segments in real estate client data using unsupervised machine learning, and to translate those segments into actionable investment profiles.
+A financial analytics project developed for Parcl Co. Limited (via Unified Mentor) that applies unsupervised machine learning to segment real estate buyers and translate those segments into portfolio-level financial insight — not just descriptive clusters.
 
 ## Project Overview
 
 Real estate companies interact with highly diverse buyers — individual home buyers, institutional investors, international buyers, high-net-worth investors, and first-time buyers. Without segmentation, companies treat all buyers the same, leading to inefficient marketing, poor targeting, and missed investment opportunities.
 
-This project uses AI-based clustering to uncover natural buyer segments from client and property transaction data, then presents the findings through an interactive dashboard.
+This project goes a step further than a purely technical clustering exercise: every segment identified is evaluated not only on its demographic composition, but on its **financial contribution to Parcl's overall client portfolio** — where revenue is concentrated, which relationships carry disproportionate value, and where financing behavior differs enough to warrant distinct commercial strategies.
 
 ## Data
 
@@ -24,24 +24,28 @@ Client-level investment features (total properties owned, total spend, average p
 5. **Clustering** — K-Means and Hierarchical (Agglomerative) clustering applied and cross-validated against each other
 6. **Optimal Cluster Selection** — Elbow Method and Silhouette Score used to justify k=5
 7. **Cluster Interpretation** — each segment profiled by spend, loan usage, geography, satisfaction, and demographics
+8. **Financial Impact Analysis** — each segment's share of total portfolio revenue compared to its share of clients, to identify disproportionately valuable segments
 
 ## Buyer Segments Identified
 
-| Segment | Size | Key Characteristics |
-|---|---|---|
-| Standard Buyers | 680 | Largest segment; lowest satisfaction and spend |
-| High-Value Buyers | 578 | Highest average price per property |
-| Loan-Dependent Buyers | 444 | Highest loan usage rate |
-| International Buyers | 248 | Youngest average age; majority non-USA (Canada, France, Belgium) |
-| Luxury Investors | 50 | Smallest segment; highest spend, most properties owned, highest satisfaction |
+| Segment | Size | % of Clients | % of Revenue | Revenue/Client Ratio | Key Characteristics |
+|---|---|---|---|---|---|
+| Standard Buyers | 680 | 34.0% | 28.7% | 0.84x | Lowest satisfaction and spend |
+| High-Value Buyers | 578 | 28.9% | 34.8% | 1.20x | Highest average price per property |
+| Loan-Dependent Buyers | 444 | 22.2% | 20.3% | 0.92x | Highest loan usage rate |
+| International Buyers | 248 | 12.4% | 11.4% | 0.92x | Youngest; majority non-USA (Canada, France, Belgium) |
+| Luxury Investors | 50 | 2.5% | 4.8% | **1.92x** | Highest spend, most properties owned, highest satisfaction |
+
+**Key finding:** Luxury Investors represent only 2.5% of the client base but generate 4.8% of Parcl's total portfolio revenue (~$2.52B) — a 1.92x revenue-to-client ratio, the highest of any segment. This disproportionate financial concentration is the central business insight of the analysis and directly informs the retention priorities recommended in the accompanying research paper.
 
 ## Dashboard
 
-An interactive Streamlit dashboard is included (`app.py`) with four modules:
-1. Buyer Segmentation Overview — cluster distribution
-2. Investor Behavior Dashboard — spend and loan patterns by segment
-3. Geographic Buyer Analysis — segment composition by country
-4. Segment Insights Panel — descriptive statistics per segment
+An interactive Streamlit dashboard is included (`app.py`) with five modules:
+1. **Buyer Segmentation Overview** — cluster distribution
+2. **Financial Impact Overview** — total portfolio value, revenue contribution by segment, and revenue-share breakdown, translating cluster membership directly into financial terms
+3. **Investor Behavior Dashboard** — spend and loan patterns by segment
+4. **Geographic Buyer Analysis** — segment composition by country
+5. **Segment Insights Panel** — descriptive statistics per segment
 
 Users can filter by country, region, acquisition purpose, and client type.
 
@@ -56,6 +60,8 @@ Users can filter by country, region, acquisition purpose, and client type.
 - `app.py` — Streamlit dashboard application
 - `clients_final.csv` — processed client dataset with cluster labels
 - `requirements.txt` — Python package dependencies
+- `buyer_segmentation_parcl.ipynb` — full analysis notebook (data cleaning, feature engineering, clustering, evaluation)
+- `Buyer_Segmentation_Research_Paper.pdf` — full research paper with financial impact analysis, EDA, methodology, and business recommendations
 
 ## Author
 
