@@ -98,6 +98,52 @@ with col2:
         top_segment = filtered["segment"].value_counts().idxmax()
         st.metric("Largest Segment", top_segment)
 
+# ---------- Module 1B: Financial Impact Overview ----------
+st.header("1B. Financial Impact Overview")
+
+total_portfolio_value = filtered["total_spend"].sum()
+revenue_by_segment = filtered.groupby("segment")["total_spend"].sum().sort_values(ascending=False)
+revenue_pct_by_segment = (revenue_by_segment / total_portfolio_value * 100).round(1)
+
+kpi1, kpi2, kpi3 = st.columns(3)
+with kpi1:
+    st.metric("Total Portfolio Value (filtered)", f"${total_portfolio_value:,.0f}")
+with kpi2:
+    top_revenue_segment = revenue_by_segment.idxmax()
+    st.metric("Top Revenue-Generating Segment", top_revenue_segment)
+with kpi3:
+    top_revenue_share = revenue_pct_by_segment.max()
+    st.metric(f"{top_revenue_segment} Share of Total Revenue", f"{top_revenue_share}%")
+
+col_rev1, col_rev2 = st.columns(2)
+
+with col_rev1:
+    fig_rev, ax_rev = plt.subplots(figsize=(6, 4.5))
+    colors_rev = [SEGMENT_COLORS[s] for s in revenue_by_segment.index]
+    ax_rev.barh(revenue_by_segment.index, revenue_by_segment.values, color=colors_rev)
+    ax_rev.set_xlabel("Total Revenue Contribution ($)")
+    ax_rev.set_title("Revenue Contribution by Segment")
+    ax_rev.grid(axis="x", alpha=0.3)
+    plt.tight_layout()
+    st.pyplot(fig_rev)
+
+with col_rev2:
+    fig_pct, ax_pct = plt.subplots(figsize=(6, 4.5))
+    colors_pct = [SEGMENT_COLORS[s] for s in revenue_pct_by_segment.sort_values(ascending=False).index]
+    ax_pct.pie(revenue_pct_by_segment.sort_values(ascending=False).values,
+               labels=revenue_pct_by_segment.sort_values(ascending=False).index,
+               autopct='%1.1f%%', colors=colors_pct, startangle=90,
+               textprops={'fontsize': 8})
+    ax_pct.set_title("Share of Total Revenue by Segment")
+    plt.tight_layout()
+    st.pyplot(fig_pct)
+
+st.caption(
+    "This module highlights the financial concentration of buyer segments: a small, high-value segment can "
+    "represent a disproportionate share of total revenue relative to its size, which is critical for prioritizing "
+    "retention and relationship management resources."
+)
+
 # ---------- Module 2: Investor Behavior Dashboard ----------
 st.header("2. Investor Behavior Dashboard")
 
